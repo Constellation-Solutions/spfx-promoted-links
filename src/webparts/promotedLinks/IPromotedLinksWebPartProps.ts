@@ -1,3 +1,4 @@
 export interface IPromotedLinksWebPartProps {
-  description: string;
+  listId: string;
+  numberOfItems: number;
 }

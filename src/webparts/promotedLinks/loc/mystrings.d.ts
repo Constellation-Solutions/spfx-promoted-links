@@ -1,7 +1,6 @@
 declare interface IPromotedLinksStrings {
-  PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
+  NumberOfDocumentsFieldLabel: string;
+  selectedListNameFieldLabel: string;
 }
 
 declare module 'promotedLinksStrings' {
