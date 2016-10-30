@@ -8,8 +8,8 @@
 
   "preconfiguredEntries": [{
     "groupId": "392c2a7a-f1d6-4d7d-8ecc-b249b1866fa1",
-    "group": { "default": "Under Development" },
-    "title": { "default": "PromotedLinks" },
+    "group": { "default": "Constellation Solutions" },
+    "title": { "default": "Promoted Links" },
     "description": { "default": "Display items from a promoted links list." },
     "officeFabricIconFontName": "PictureLibrary",
     "properties": {
