@@ -5,7 +5,7 @@ This is an example client-side web part built with the SharePoint Framework, Rea
 ### Building the code
 
 ```bash
-git clone the repo
+git clone https://github.com/Constellation-Solutions/spfx-promoted-links.git
 npm i
 npm i -g gulp
 gulp serve
