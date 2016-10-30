@@ -4,7 +4,7 @@ This is an example client-side web part built with the SharePoint Framework, Rea
 
 Easily display items from a promoted links list on new modern SharePoint pages.
 
-![Promoted Links Overview](spfx-promoted-links/assets/promotedLinks-overview.png)
+![Promoted Links Overview](https://github.com/Constellation-Solutions/spfx-promoted-links/blob/master/assets/promotedLinks-overview.png)
 
 ### Obtain and Build the code
 
