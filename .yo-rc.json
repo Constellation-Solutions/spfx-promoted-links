@@ -1,7 +1,0 @@
-{
-  "@microsoft/generator-sharepoint": {
-    "libraryName": "spfx-promoted-links",
-    "libraryId": "387bb191-e1a4-4610-b111-3e6d9b345334",
-    "framework": "react"
-  }
-}
