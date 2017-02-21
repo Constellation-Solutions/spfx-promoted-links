@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "entry": "./lib/webparts/promotedLinks/PromotedLinksWebPart.js",
+      "manifest": "./src/webparts/promotedLinks/PromotedLinksWebPart.manifest.json",
+      "outputPath": "./dist/promoted-links.bundle.js"
+    }
+  ],
+  "externals": {},
+  "localizedResources": {
+    "promotedLinksStrings": "webparts/promotedLinks/loc/{locale}.js"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../node_modules/@microsoft/sp-module-interfaces/lib/manifestSchemas/jsonSchemas/clientSideComponentManifestSchema.json",
+
+  "id": "392c2a7a-f1d6-4d7d-8ecc-b249b1866fa1",
+  "alias": "ConstellationPromotedLinks",
+  "componentType": "WebPart",
+  "version": "0.0.2",
+  "manifestVersion": 2,
+
+  "preconfiguredEntries": [{
+    "groupId": "012391e4-2476-483f-9585-b7283b9f4e4d",
+    "group": { "default": "Constellation Solutions" },
+    "title": { "default": "Promoted Links" },
+    "description": { "default": "Display items from a promoted links list." },
+    "officeFabricIconFontName": "PictureLibrary",
+    "properties": {
+      "numberOfItems": 10
+    }
+  }]
+}
