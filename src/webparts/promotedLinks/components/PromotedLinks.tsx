@@ -1,21 +1,8 @@
 import * as React from 'react';
-
 import styles from './PromotedLinks.module.scss';
-import { IPromotedLinksWebPartProps } from '../IPromotedLinksWebPartProps';
-
-import PromotedLinkItem from './PromotedLinkItem';
-
-export interface IPromotedLinksProps extends IPromotedLinksWebPartProps {
-  isWorkbench: boolean;
-  siteUrl: string;
-}
-
-export interface IPromotedLinkDataItem {
-  Title: string;
-  ImageUrl: string;
-  Description: string;
-  LinkUrl: string;
-}
+import { IPromotedLinksProps, IPromotedLinkDataItem } from './IPromotedLinksProps';
+import PromotedLinkItem, { IPromotedLinkItemProps }  from './PromotedLinkItem';
+import { escape } from '@microsoft/sp-lodash-subset';
 
 export interface IPromotedLinksState {
   listData: IPromotedLinkDataItem[];
@@ -27,6 +14,27 @@ export default class PromotedLinks extends React.Component<IPromotedLinksProps, 
     super(props);
 
     this.state = { listData: [] };
+  }
+
+  public render(): React.ReactElement<IPromotedLinksProps> {
+    return (
+      <div className={styles.promotedLinks}>
+        <div className={styles.container}>
+
+          {
+            this.state.listData.map((item: IPromotedLinkDataItem) => {
+              return <PromotedLinkItem
+                title={item.Title}
+                description={item.Description}
+                imageUrl={item.ImageUrl}
+                href={item.LinkUrl} />;
+            })
+          }
+
+          <div style={{clear:'both'}}></div>
+        </div>
+      </div>
+    );
   }
 
   public componentDidMount(): void {
@@ -83,27 +91,6 @@ export default class PromotedLinks extends React.Component<IPromotedLinksProps, 
       || prevProps.listId != this.props.listId && (this.props.numberOfItems && this.props.listId)) {
         this.loadData();
     }
-  }
-
-  public render(): JSX.Element {
-    return (
-      <div className={styles.promotedLinks}>
-        <div className={styles.container}>
-
-          {
-            this.state.listData.map((item: IPromotedLinkDataItem) => {
-              return <PromotedLinkItem
-                title={item.Title}
-                description={item.Description}
-                imageUrl={item.ImageUrl}
-                href={item.LinkUrl} />;
-            })
-          }
-
-          <div style={{clear:'both'}}></div>
-        </div>
-      </div>
-    );
   }
 
   private request<T>(url: string, method: string = 'GET', headers: any = null, data: any = null): Promise<T> {

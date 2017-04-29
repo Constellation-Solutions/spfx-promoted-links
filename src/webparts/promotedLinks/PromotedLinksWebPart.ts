@@ -11,19 +11,10 @@ import {
 
 import * as strings from 'promotedLinksStrings';
 import PromotedLinks from './components/PromotedLinks';
-import { IPromotedLinksProps } from './components/PromotedLinks';
-import { IPromotedLinksWebPartProps } from './IPromotedLinksWebPartProps';
-import {SPHttpClient } from '@microsoft/sp-http';
+import { IPromotedLinksProps } from './components/IPromotedLinksProps';
+import { IPromotedLinksWebPartProps, ISPLists, ISPList } from './IPromotedLinksWebPartProps';
+import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { Environment, EnvironmentType } from '@microsoft/sp-core-library';
-
-interface ISPList {
-  Title: string;
-  Id: string;
-}
-
-interface ISPLists {
-  value: ISPList[];
-}
 
 export default class PromotedLinksWebPart extends BaseClientSideWebPart<IPromotedLinksWebPartProps> {
 
@@ -36,8 +27,8 @@ export default class PromotedLinksWebPart extends BaseClientSideWebPart<IPromote
     return Promise.resolve();
   }
 
-  private _listsInThisSite: IPropertyPaneDropdownOption[] = [];  
-  
+  private _listsInThisSite: IPropertyPaneDropdownOption[] = [];
+
   public render(): void {
     const element: React.ReactElement<IPromotedLinksProps > = React.createElement(
       PromotedLinks,
@@ -45,16 +36,40 @@ export default class PromotedLinksWebPart extends BaseClientSideWebPart<IPromote
         isWorkbench: Environment.type == EnvironmentType.Local,
         siteUrl: this.context.pageContext.web.absoluteUrl,
         numberOfItems: this.properties.numberOfItems,
-        listId: this.properties.listId        
+        listId: this.properties.listId
       }
     );
 
     ReactDom.render(element, this.domElement);
   }
 
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    return {
+      pages: [
+        {
+          groups: [
+            {
+              groupFields: [
+               PropertyPaneDropdown('listId', {
+                  label: strings.selectedListNameFieldLabel,
+                  options: this._listsInThisSite
+                }),
+                PropertyPaneSlider('numberOfItems', {
+                  label: strings.NumberOfDocumentsFieldLabel,
+                  min: 1,
+                  max: 10,
+                  step: 1
+                })
+              ]
+            }
+          ]
+        }
+      ]
+    };
+  }
 
   private fetchLists(url: string) : Promise<ISPLists> {
-    return this.context.spHttpClient.get(url, SPHttpClient.configurations.v1).then((response: Response) => {
+    return this.context.spHttpClient.get(url, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
         if (response.ok) {
           return response.json();
         } else {
@@ -81,30 +96,5 @@ export default class PromotedLinksWebPart extends BaseClientSideWebPart<IPromote
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
-  }
-
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    return {
-      pages: [
-        {
-          groups: [
-            {
-              groupFields: [
-                PropertyPaneDropdown('listId', {
-                  label: strings.selectedListNameFieldLabel,
-                  options: this._listsInThisSite
-                }),
-                PropertyPaneSlider('numberOfItems', {
-                  label: strings.NumberOfDocumentsFieldLabel,
-                  min: 1,
-                  max: 10,
-                  step: 1
-                })
-              ]
-            }
-          ]
-        }
-      ]
-    };
   }
 }
