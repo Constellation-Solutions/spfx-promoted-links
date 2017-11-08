@@ -36,7 +36,8 @@ export default class PromotedLinksWebPart extends BaseClientSideWebPart<IPromote
         isWorkbench: Environment.type == EnvironmentType.Local,
         siteUrl: this.context.pageContext.web.absoluteUrl,
         numberOfItems: this.properties.numberOfItems,
-        listId: this.properties.listId
+        listId: this.properties.listId,
+        spHttpClient: this.context.spHttpClient
       }
     );
 

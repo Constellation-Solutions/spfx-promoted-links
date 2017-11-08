@@ -3,6 +3,7 @@ import styles from './PromotedLinks.module.scss';
 import { IPromotedLinksProps, IPromotedLinkDataItem } from './IPromotedLinksProps';
 import PromotedLinkItem, { IPromotedLinkItemProps }  from './PromotedLinkItem';
 import { escape } from '@microsoft/sp-lodash-subset';
+import { SPHttpClient } from '@microsoft/sp-http';
 
 export interface IPromotedLinksState {
   listData: IPromotedLinkDataItem[];
@@ -55,7 +56,7 @@ export default class PromotedLinks extends React.Component<IPromotedLinksProps, 
           {
             Title: "Test Item with a Long Title",
             Description: "Test description",
-            ImageUrl: "http://justcuteanimals.com/wp-content/uploads/2013/08/baby-fox-pictures-cute-animal-pics-images.jpg",
+            ImageUrl: "https://pgcpsmess.files.wordpress.com/2014/04/330277-red-fox-kelly-lyon-760x506.jpg",
             LinkUrl: "http://www.google.com"
           },
           {
@@ -68,7 +69,10 @@ export default class PromotedLinks extends React.Component<IPromotedLinksProps, 
       });
     } else {
       // get data from SharePoint
-      this.request(`${this.props.siteUrl}/_api/Web/Lists(guid'${this.props.listId}')/Items?$top=${this.props.numberOfItems}`)
+      this.props.spHttpClient.get(`${this.props.siteUrl}/_api/Web/Lists(guid'${this.props.listId}')/Items?$top=${this.props.numberOfItems}`, SPHttpClient.configurations.v1)
+      .then(response => {
+        return response.json();
+      })
       .then((items: any) => {
         const listItems: IPromotedLinkDataItem[] = [];
         for (let i: number = 0; i < items.value.length; i++) {
@@ -91,39 +95,5 @@ export default class PromotedLinks extends React.Component<IPromotedLinksProps, 
       || prevProps.listId != this.props.listId && (this.props.numberOfItems && this.props.listId)) {
         this.loadData();
     }
-  }
-
-  private request<T>(url: string, method: string = 'GET', headers: any = null, data: any = null): Promise<T> {
-    return new Promise<T>((resolve, reject): void => {
-      const xhr: XMLHttpRequest = new XMLHttpRequest();
-      xhr.onreadystatechange = function (): void {
-        if (this.readyState === 4) {
-          if (this.status === 200) {
-            resolve(this.response as T);
-          }
-          else if (this.status >= 400) {
-            reject({
-              message: this.response['odata.error'].message.value,
-              statusText: this.statusText,
-              status: this.status
-            });
-          }
-        }
-      };
-
-      xhr.open(method, url, true);
-      if (headers === null) {
-        xhr.setRequestHeader('Accept', 'application/json;odata=nometadata');
-      }
-      else {
-        for (var header in headers) {
-          if (headers.hasOwnProperty(header)) {
-            xhr.setRequestHeader(header, headers[header]);
-          }
-        }
-      }
-      xhr.responseType = 'json';
-      xhr.send(data);
-    });
   }
 }
